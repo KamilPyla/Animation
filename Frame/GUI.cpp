@@ -61,6 +61,7 @@ MyFrame1::~MyFrame1()
 {
 	// Disconnect Events
 	window_print->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
+	window_print->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
 	save_frame->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
 	save_frame->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
 

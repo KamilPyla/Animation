@@ -54,12 +54,24 @@ void GUIMyFrame1::Show_animation()
 	wxBitmap b(x, y);
 	wxBufferedDC fill(&dc, b);
 	fill.Clear();
-	ReadInstructions read (_filename, &dc);
-	if (save_frame->IsChecked())
-		read.Draw(true);
-	else
-		read.Draw(false);
+	if (_filename == "") 
+	{
+		wxMessageBox(wxT("Wybierz plik!"), wxT("Nie wybrano pliku"), wxICON_INFORMATION);
+	}
+	else 
+	{
 
+		ReadInstructions read (_filename, &dc);
+		if (save_frame->IsChecked())
+		{
+			read.Draw(true);
+		}
+		else
+		{
+			read.Draw(false);
+		}
+
+	}
 }
 
 void GUIMyFrame1::touch( wxCommandEvent& event )
@@ -77,13 +89,7 @@ void GUIMyFrame1::update_view()
 	dc.GetSize(&x, &y);
 	wxBitmap b(x, y);
 	wxBufferedDC fill(&dc, b);
-	x /= 2;
-	y /= 2;
+
 	fill.Clear();
 
-	if (save_frame->IsChecked()) {
-		fill.Clear();
-		wxString mystring(_filename);
-		fill.DrawText(mystring, 52,25);
-	}
 }

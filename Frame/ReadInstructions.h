@@ -9,7 +9,6 @@ using namespace std;
 
 class ReadInstructions {
 public:
-	ReadInstructions(string file);
 	
 	ReadInstructions(string file, wxDC* d) :_file(file), dc(d) {}
 
@@ -17,7 +16,7 @@ public:
 
 	void SetWinSize(int x, int y);
 
-	void SetTimeAndNumber(int n, float t);
+	void SetTimeAndNumber(int n, int t);
 
 	void DrawPunkt(int x, int y);
 
@@ -36,8 +35,6 @@ public:
 	void SetFillColor(int r, int g, int b);
 
 	void SaveBitMap();
-
-	wxBitmap BitMap();
 	
 	void DisplayBitMap() const;
 
@@ -46,9 +43,9 @@ private:
 
 	bool _save = false;
 
-	bool _flag;
+	bool _flag = false;
 
-	int _time;
+	int _time = 1;
 
 	int _PenSize = 1;
 
@@ -56,15 +53,9 @@ private:
 
 	int height;
 
-	int _num = 0;
-
-	int nrKlatki = 0;
-
 	string _file;
 
 	wxBitmap bitMap;
-
-	std::vector<wxBitmap> _klatki;
 
 	wxMemoryDC memdc;
 

@@ -23,7 +23,7 @@ class GUIMyFrame1 : public MyFrame1
 		void choose_file_ins( wxCommandEvent& event );
 		void start_animation( wxCommandEvent& event );
 		void touch( wxCommandEvent& event );
-		std::string  _filename = "./Instructions.txt";
+		std::string  _filename = "";
 	public:
 		/** Constructor */
 		GUIMyFrame1( wxWindow* parent );
@@ -31,10 +31,6 @@ class GUIMyFrame1 : public MyFrame1
 
 		void update_view();
 		void Show_animation();
-		int _radius = 20;
-		wxBitmap _banan;
-		wxImage picture;
-
 };
 
 #endif // __GUIMyFrame1__

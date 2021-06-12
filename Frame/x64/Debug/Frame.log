@@ -1,0 +1,7 @@
+﻿  GUI.cpp
+  GUIMyFrame1.cpp
+C:\Users\Lenovo\OneDrive\Pulpit\Frame\Frame\GUIMyFrame1.h(13,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Lab03.cpp
+C:\Users\Lenovo\OneDrive\Pulpit\Frame\Frame\GUIMyFrame1.h(13,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+  Frame.vcxproj -> C:\Users\Lenovo\OneDrive\Pulpit\Frame\x64\Debug\Frame.exe

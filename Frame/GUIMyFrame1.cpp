@@ -17,11 +17,6 @@ MyFrame1( parent )
 }
 
 
-void GUIMyFrame1::changed_size_window( wxUpdateUIEvent& event )
-{
-	update_view();
-}
-
 void GUIMyFrame1::choose_file_ins(wxCommandEvent& event) {
 	wxFileDialog
 		openFileDialog(this, _("Open TXT file"), "", "",
@@ -43,53 +38,41 @@ void GUIMyFrame1::choose_file_ins(wxCommandEvent& event) {
 
 void GUIMyFrame1::start_animation(wxCommandEvent& event)
 {
-	Show_animation();
+	Show_animation(false);
+}
+void GUIMyFrame1::save_bitmap(wxCommandEvent& event)
+{
+	Show_animation(true);
 }
 
-void GUIMyFrame1::Show_animation() 
+void GUIMyFrame1::Show_animation(bool save) 
 {
 	wxClientDC dc(window_print);
-	int x, y;
-	dc.GetSize(&x, &y);
-	wxBitmap b(x, y);
-	wxBufferedDC fill(&dc, b);
-	fill.Clear();
 	if (_filename == "") 
 	{
 		wxMessageBox(wxT("Wybierz plik!"), wxT("Nie wybrano pliku"), wxICON_INFORMATION);
 	}
 	else 
 	{
+		if (read)
+			delete read;
 
-		ReadInstructions read (_filename, &dc);
-		if (save_frame->IsChecked())
-		{
-			read.Draw(true);
-		}
-		else
-		{
-			read.Draw(false);
-		}
+		read = new ReadInstructions(_filename, &dc);
+			read->Draw(save);
+
+		if (save)
+			wxMessageBox(wxT("Zapisano!\n  "), wxT("Koniec zapisu"), wxICON_INFORMATION);
+		
+		wxMessageBox(wxT("Wybierz nowy plik, otwórz ponownie lub zapisz seriê BITMAP"), wxT("Koniec Akcji"), wxICON_INFORMATION);
 
 	}
 }
 
-void GUIMyFrame1::touch( wxCommandEvent& event )
-{
-	if (save_frame->IsChecked())
-	{
-	update_view();
-	}
+void GUIMyFrame1::stop_animation(wxCommandEvent& event) {
+	read->stop = true;
 }
 
-void GUIMyFrame1::update_view()
-{
-	wxClientDC dc(window_print);
-	int x, y;
-	dc.GetSize(&x, &y);
-	wxBitmap b(x, y);
-	wxBufferedDC fill(&dc, b);
-
-	fill.Clear();
-
+GUIMyFrame1::~GUIMyFrame1() {
+	if (read)
+		delete read;
 }

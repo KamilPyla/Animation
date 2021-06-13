@@ -24,8 +24,7 @@
 #include <wx/textctrl.h>
 #include <wx/choice.h>
 #include <wx/frame.h>
-#include <wx/msw/checkbox.h>
-#include <wx/event.h>
+
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -39,19 +38,16 @@ class MyFrame1 : public wxFrame
 	
 	protected:
 		wxPanel* window_print;
-		//wxButton* save_image;
 		wxButton* choose_file;
 		wxButton* start;
-		wxMenuBar* menu;
-
-		
-
-		wxCheckBox* save_frame;
-		
+		wxButton* stop;
+		wxButton* save;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void changed_size_window( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void start_animation( wxCommandEvent& event ) { event.Skip(); }
+		virtual void stop_animation(wxCommandEvent& event) { event.Skip(); }
+		virtual void save_bitmap(wxCommandEvent& event) { event.Skip(); }
 		virtual void choose_file_ins(wxCommandEvent& event) { event.Skip(); }
 		virtual void touch( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -60,7 +56,7 @@ class MyFrame1 : public wxFrame
 		
 		MyFrame1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200,800 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~MyFrame1();
+		virtual ~MyFrame1();
 	
 };
 

@@ -19,33 +19,35 @@ void split(const std::string& str, Container& cont,
 	cont.push_back(str.substr(previous, current - previous));
 }
 
-void ReadInstructions::Draw(bool s)
+void ReadInstructions::Read()
 {
-	_save = s;
 
 	string line;
 	ifstream instructions(_file);
 
-	vector<string> inst;
-
-	//wczytanie pierwszej lini
-	if (getline(instructions, line))
-	{
-		split(line, inst);
-		SetWinSize(stoi(inst[0]), stoi(inst[1]));
-		inst.clear();
-	}
-
 	while (getline(instructions, line)) 
 	{
-		split(line, inst);
-		ChooseFunction(inst);
-		inst.clear();
+		_instructions.push_back(line);
 	}
 	instructions.close();
-
-	
 }
+
+void ReadInstructions::Draw(bool s){
+	_save = s;
+	vector<string> ins;
+	split(_instructions[0], ins);
+	SetWinSize(stoi(ins[0]), stoi(ins[1]));
+	ins.clear();
+	_instructions.erase(_instructions.begin());
+	for (auto el : _instructions) {
+		split(el, ins);
+		if (ChooseFunction(ins) && !stop)
+			ins.clear();
+		else break;
+	}
+}
+
+
 
 void ReadInstructions::SetWinSize(int x, int y) 
 {
@@ -59,7 +61,6 @@ void ReadInstructions::SetTimeAndNumber(int n, int t)
 	memdc.SelectObject(bitMap);
 	_time = t;
 	FileName = to_string(n) + "_BitMap.bmp";
-	memdc.SetBackground(*wxWHITE_BRUSH);
 }
 
 void ReadInstructions::DrawElipse(int x1, int y1, int x2, int y2, int flag) 
@@ -108,7 +109,8 @@ void ReadInstructions::SaveBitMap()
 	memdc.SelectObject(wxNullBitmap);
 	if (_save)
 		bitMap.SaveFile(FileName, wxBITMAP_TYPE_BMP);
-	DisplayBitMap();
+	else 
+		DisplayBitMap();
 }
 
 
@@ -116,51 +118,65 @@ void ReadInstructions::DisplayBitMap() const
 {
 	dc->DrawBitmap(bitMap, 0, 0, false);
 	Sleep(_time);
+	wxYield();
 }
 
-void ReadInstructions::ChooseFunction(const vector<std::string>& ins)
+bool ReadInstructions::ChooseFunction(const vector<std::string>& ins)
 {
 	std::string s = ins[0];
 
-	if (ins.size() == 2 and s != "RP" and s != "rozmiar_piora") 
+	if (ins.size() == 2 && s != "RP" && s != "rozmiar_piora") 
 	{
 		SetTimeAndNumber(stoi(ins[0]), stoi(ins[1]));
+		return true;
 	}
 
-	else if (s == "punkt" or s == "PT") 
+	else if (s == "punkt" || s == "PT" && ins.size() == 3 ) 
 	{
 		DrawPunkt(stoi(ins[1]), stoi(ins[2]));
+		return true;
 	}
 
-	else if (s == "elipsa" or s == "EL") 
+	else if (s == "elipsa" || s == "EL" && ins.size() == 6) 
 	{
 		DrawElipse(stoi(ins[1]), stoi(ins[2]), stoi(ins[3]), stoi(ins[4]), stoi(ins[5]));
+		return true;
 	}
-	else if (s == "prostokat" or s == "PR") 
+	else if (s == "prostokat" || s == "PR" && ins.size() == 6) 
 	{
 		DrawRectangle(stoi(ins[1]), stoi(ins[2]), stoi(ins[3]), stoi(ins[4]), stoi(ins[5]));
+		return true;
 	}
 
-	else if ("linia" == s or "LN" == s) 
+	else if ("linia" == s || "LN" == s && ins.size() == 5) 
 	{
 		DrawLine(stoi(ins[1]), stoi(ins[2]), stoi(ins[3]), stoi(ins[4]));
+		return true;
 	}
-	else if ("rozmiar_piora" == s or "RP" == s) 
+	else if ("rozmiar_piora" == s || "RP" == s && ins.size() == 2) 
 	{
 		SetPenSize(stoi(ins[1]));
+		return true;
 	}
-	else if ("kolor_piora" == s or "KP" == s) 
+	else if ("kolor_piora" == s || "KP" == s && ins.size() == 4) 
 	{
 		SetPenColour(stoi(ins[1]), stoi(ins[2]), stoi(ins[3]));
+		return true;
 	}
-	else if ("kolor_wypelnienia" == s or "KW" == s) 
+	else if ("kolor_wypelnienia" == s || "KW" == s && ins.size() == 4) 
 	{
 		SetFillColor(stoi(ins[1]), stoi(ins[2]), stoi(ins[3]));
+		return true;
 	}
-	else if ("stop" == s or "ST" == s) 
+	else if ("stop" == s || "ST" == s) 
 	{
 		cout << "zapis klatki" << endl;
 		SaveBitMap();
+		return true;
+	}
+	else {
+		wxMessageBox(wxT("Niepoprawny plik"), wxT("B³¹d pliku"), wxICON_ERROR);
+		return false;
 	}
 
 }

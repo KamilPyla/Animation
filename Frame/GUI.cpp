@@ -34,11 +34,15 @@ MyFrame1::MyFrame1( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	choose_file = new wxButton( this, wxID_ANY, wxT("Wybierz plik"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer10->Add( choose_file, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	save_frame = new wxCheckBox( this, wxID_ANY, wxT("Zapisz klatki"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer10->Add( save_frame, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );	
 	
 	start = new wxButton( this, wxID_ANY, wxT("Wyœwietl Animacjê"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer10->Add( start, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	save = new wxButton(this, wxID_ANY, wxT("Zapisz Animaciê jako .bmp"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer10->Add(save, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+
+	stop = new wxButton( this, wxID_ANY, wxT("Zatrzymaj Animacjê"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer10->Add( stop, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
 	bSizer8->Add( bSizer10, 0, wxEXPAND, 5 );
@@ -53,7 +57,8 @@ MyFrame1::MyFrame1( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	window_print->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
 	choose_file->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MyFrame1::choose_file_ins ), NULL, this );
 	start->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MyFrame1::start_animation ), NULL, this );
-	save_frame->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
+	stop->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MyFrame1::stop_animation ), NULL, this );
+	save->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame1::save_bitmap), NULL, this);
 
 }
 
@@ -61,9 +66,9 @@ MyFrame1::~MyFrame1()
 {
 	// Disconnect Events
 	window_print->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
-	window_print->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
-	save_frame->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
-	save_frame->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
-
+	choose_file->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MyFrame1::changed_size_window ), NULL, this );
+	start->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
+	start->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MyFrame1::touch ), NULL, this );
+	save->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame1::save_bitmap), NULL, this);
 	
 }

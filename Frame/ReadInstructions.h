@@ -2,17 +2,27 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include "windows.h"
+#include <wx/dcbuffer.h>
 
 using namespace std;
 
 class ReadInstructions {
 public:
+	ReadInstructions() : _file(""), dc(nullptr) {}
 	
-	ReadInstructions(string file, wxDC* d) :_file(file), dc(d) {}
+	ReadInstructions(string file, wxDC* d) :_file(file), dc(d) {
+		Read();
+	}
 
 	void Draw(bool s = false);
+
+	bool stop = false;
+
+private:
+
+	void Read();
 
 	void SetWinSize(int x, int y);
 
@@ -30,16 +40,13 @@ public:
 
 	void SetPenColour(int r, int g, int b);
 
-	void ChooseFunction(const vector<string>& ins);
+	bool ChooseFunction(const vector<string>& ins);
 
 	void SetFillColor(int r, int g, int b);
 
 	void SaveBitMap();
 	
 	void DisplayBitMap() const;
-
-
-private:
 
 	bool _save = false;
 
@@ -54,6 +61,8 @@ private:
 	int height;
 
 	string _file;
+
+	std::vector<std::string> _instructions;
 
 	wxBitmap bitMap;
 
